@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyberpunk Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="dashboard">
+    <h1 class="dashboard-title">Cyberpunk Dashboard</h1>
+    <div class="cards">
+      <div class="card">
+        <h2>Users</h2>
+        <p>1,245</p>
+      </div>
+      <div class="card">
+        <h2>Sales</h2>
+        <p>$5,432</p>
+      </div>
+      <div class="card">
+        <h2>Revenue</h2>
+        <p>$12,980</p>
+      </div>
+      <div class="card">
+        <h2>Visitors</h2>
+        <p>9,876</p>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="dashboard-sparks"></canvas>
+
+  <script>
+    const canvas = document.getElementById('dashboard-sparks');
+    const ctx = canvas.getContext('2d');
+    let sparks = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function createSpark(x, y) {
+      sparks.push({
+        x: x,
+        y: y,
+        vx: (Math.random()-0.5)*1.5,
+        vy: (Math.random()-1.5)*1.5,
+        alpha: 1,
+        size: Math.random()*3 + 1
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      sparks.forEach((spark, i) => {
+        ctx.fillStyle = `rgba(0,255,255,${spark.alpha})`;
+        ctx.beginPath();
+        ctx.arc(spark.x, spark.y, spark.size, 0, Math.PI*2);
+        ctx.fill();
+        spark.x += spark.vx;
+        spark.y += spark.vy;
+        spark.alpha -= 0.02;
+        if (spark.alpha <= 0) sparks.splice(i,1);
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    function spawnSparks(e) {
+      let x = e.clientX || e.touches[0].clientX;
+      let y = e.clientY || e.touches[0].clientY;
+      for(let i=0;i<3;i++) createSpark(x, y);
+    }
+    window.addEventListener('mousemove', spawnSparks);
+    window.addEventListener('touchmove', spawnSparks, {passive:true});
+  </script>
+</body>
+</html>
