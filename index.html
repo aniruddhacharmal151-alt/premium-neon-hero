@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Responsive GOD LEVEL Neon Hero</title>
+<title>Interactive Neon Hero</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,5 +22,56 @@
       <div class="shape triangle"></div>
     </div>
   </div>
+
+  <canvas id="sparks-canvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('sparks-canvas');
+    const ctx = canvas.getContext('2d');
+    let sparks = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function createSpark(x, y) {
+      sparks.push({
+        x: x,
+        y: y,
+        vx: (Math.random()-0.5)*2,
+        vy: (Math.random()-1.5)*2,
+        alpha: 1,
+        size: Math.random()*4 + 2
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      sparks.forEach((spark,i)=>{
+        ctx.fillStyle = `rgba(0,255,255,${spark.alpha})`;
+        ctx.beginPath();
+        ctx.arc(spark.x,spark.y,spark.size,0,Math.PI*2);
+        ctx.fill();
+        spark.x += spark.vx;
+        spark.y += spark.vy;
+        spark.alpha -= 0.02;
+        if(spark.alpha<=0) sparks.splice(i,1);
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    function spawnSparks(e){
+      let x = e.clientX || e.touches[0].clientX;
+      let y = e.clientY || e.touches[0].clientY;
+      for(let i=0;i<3;i++) createSpark(x,y);
+    }
+
+    window.addEventListener('mousemove',spawnSparks);
+    window.addEventListener('touchmove',spawnSparks,{passive:true});
+  </script>
 </body>
 </html>
