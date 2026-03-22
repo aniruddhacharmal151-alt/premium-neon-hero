@@ -14,62 +14,101 @@
       <button class="epic-neon-btn"><span>Get Started</span></button>
       <button class="epic-neon-btn"><span>Learn More</span></button>
     </div>
-    <div class="shape-container">
-      <!-- Shapes stay inside container -->
-      <div class="shape circle"></div>
-      <div class="shape triangle"></div>
-      <div class="shape square"></div>
-      <div class="shape circle"></div>
-      <div class="shape triangle"></div>
-    </div>
+    <div class="shape-container"></div>
   </div>
   <canvas id="sparks-canvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('sparks-canvas');
+    const ctx = canvas.getContext('2d');
+    let sparks = [];
+    let shapes = [];
+
+    function resizeCanvas(){
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Create floating neon shapes
+    function createShapes(){
+      shapes = [];
+      const types = ['circle','triangle','square'];
+      for(let i=0;i<30;i++){
+        shapes.push({
+          x: Math.random()*canvas.width,
+          y: Math.random()*canvas.height,
+          size: Math.random()*15+5,
+          type: types[Math.floor(Math.random()*types.length)],
+          vy: Math.random()*0.3+0.1,
+          alpha: Math.random()*0.7+0.3
+        });
+      }
+    }
+    createShapes();
+
+    function drawShapes(){
+      shapes.forEach(s=>{
+        ctx.save();
+        ctx.globalAlpha = s.alpha;
+        ctx.fillStyle = '#0ff';
+        ctx.translate(s.x,s.y);
+        if(s.type==='circle'){
+          ctx.beginPath();
+          ctx.arc(0,0,s.size,0,Math.PI*2);
+          ctx.fill();
+        } else if(s.type==='triangle'){
+          ctx.beginPath();
+          ctx.moveTo(0,-s.size);
+          ctx.lineTo(s.size, s.size);
+          ctx.lineTo(-s.size,s.size);
+          ctx.closePath();
+          ctx.fill();
+        } else {
+          ctx.fillRect(-s.size/2,-s.size/2,s.size,s.size);
+        }
+        ctx.restore();
+        s.y -= s.vy;
+        if(s.y<-s.size) s.y = canvas.height+s.size;
+      });
+    }
+
+    // Sparks following touch/mouse
+    function createSpark(x,y){
+      sparks.push({
+        x:x, y:y,
+        vx:(Math.random()-0.5)*2,
+        vy:(Math.random()-1.5)*2,
+        alpha:1,
+        size:Math.random()*3+1
+      });
+    }
+
+    function animate(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      drawShapes();
+      sparks.forEach((spark,i)=>{
+        ctx.fillStyle = `rgba(0,255,255,${spark.alpha})`;
+        ctx.beginPath();
+        ctx.arc(spark.x,spark.y,spark.size,0,Math.PI*2);
+        ctx.fill();
+        spark.x += spark.vx;
+        spark.y += spark.vy;
+        spark.alpha -= 0.02;
+        if(spark.alpha<=0) sparks.splice(i,1);
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    function spawnSparks(e){
+      let x = e.clientX || e.touches[0].clientX;
+      let y = e.clientY || e.touches[0].clientY;
+      for(let i=0;i<3;i++) createSpark(x,y);
+    }
+    window.addEventListener('mousemove',spawnSparks);
+    window.addEventListener('touchmove',spawnSparks,{passive:true});
+  </script>
 </body>
-<script>
-const canvas = document.getElementById('sparks-canvas');
-const ctx = canvas.getContext('2d');
-let sparks = [];
-
-function resizeCanvas(){
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-
-function createSpark(x,y){
-  sparks.push({
-    x: x,
-    y: y,
-    vx: (Math.random()-0.5)*1.5,
-    vy: (Math.random()-1.5)*1.5,
-    alpha: 1,
-    size: Math.random()*3 + 1
-  });
-}
-
-function animate(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  sparks.forEach((spark,i)=>{
-    ctx.fillStyle = `rgba(0,255,255,${spark.alpha})`;
-    ctx.beginPath();
-    ctx.arc(spark.x,spark.y,spark.size,0,Math.PI*2);
-    ctx.fill();
-    spark.x += spark.vx;
-    spark.y += spark.vy;
-    spark.alpha -= 0.02;
-    if(spark.alpha<=0) sparks.splice(i,1);
-  });
-  requestAnimationFrame(animate);
-}
-animate();
-
-function spawnSparks(e){
-  let x = e.clientX || e.touches[0].clientX;
-  let y = e.clientY || e.touches[0].clientY;
-  for(let i=0;i<3;i++) createSpark(x,y);
-}
-window.addEventListener('mousemove',spawnSparks);
-window.addEventListener('touchmove',spawnSparks,{passive:true});
-</script>
 </html>
