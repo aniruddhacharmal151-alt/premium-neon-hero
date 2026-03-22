@@ -3,118 +3,111 @@
   --btn-bg: #111;
 }
 
-* { box-sizing: border-box; margin:0; padding:0; }
+/* Base */
+* { box-sizing:border-box; margin:0; padding:0; }
 body {
   font-family: 'Arial', sans-serif;
   background: #000;
-  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden; /* prevent horizontal scroll */
+  overflow-y: auto;
+  position: relative;
 }
 
+/* Hero */
 .hero {
   text-align: center;
-  padding: 5vw;
-  width: 100%;
-  max-width: 600px;
-  position: relative;
+  width: 90%;
+  max-width: 500px; /* keeps content inside screen */
+  padding: 5%;
   z-index: 1;
 }
 
+/* Text */
 .neon-text {
-  font-size: 8vw;
+  font-size: 8vw; 
   color: var(--neon-color);
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.1em;
   animation: shimmer 3s linear infinite;
-  text-shadow: 0 0 5px var(--neon-color), 0 0 10px var(--neon-color), 0 0 20px var(--neon-color);
+  text-shadow: 0 0 5px var(--neon-color),0 0 10px var(--neon-color),0 0 20px var(--neon-color);
   margin-bottom: 3vw;
 }
 
 .subtext {
   font-size: 4vw;
   color: var(--neon-color);
-  opacity: 0.7;
-  margin-bottom: 6vw;
+  opacity:0.7;
+  margin-bottom:5vw;
 }
 
+/* Buttons */
 .buttons {
-  display: flex;
+  display:flex;
   flex-direction: column;
   gap: 4vw;
   align-items: center;
-  z-index: 1;
-  position: relative;
 }
 
 .epic-neon-btn {
   position: relative;
   padding: 3vw 8vw;
+  font-size:5vw;
   color: var(--neon-color);
   background: var(--btn-bg);
   border: 2px solid var(--neon-color);
   border-radius: 2vw;
-  font-size: 5vw;
   cursor: pointer;
-  overflow: hidden;
-  box-shadow: 0 0 3vw var(--neon-color), 0 0 6vw var(--neon-color);
-  transition: 0.3s;
+  overflow:hidden;
+  box-shadow: 0 0 3vw var(--neon-color),0 0 6vw var(--neon-color);
+  transition:0.3s;
   animation: pulse 1.5s infinite alternate;
 }
 
-.epic-neon-btn span { position: relative; z-index:2; }
-
-.epic-neon-btn::before {
-  content: '';
-  position: absolute;
-  top: -50%; left: -50%;
-  width: 200%; height: 200%;
-  background: linear-gradient(45deg,#0ff,#f0f,#ff0,#0ff);
-  animation: rotateGlow 4s linear infinite;
-  z-index:1; opacity:0.25; border-radius: 2vw;
-}
-
-.epic-neon-btn::after {
+.epic-neon-btn span{position:relative; z-index:2;}
+.epic-neon-btn::before{
   content:'';
-  position:absolute; top:50%; left:50%;
+  position:absolute;
+  top:-50%; left:-50%;
+  width:200%; height:200%;
+  background: linear-gradient(45deg,#0ff,#f0f,#ff0,#0ff);
+  opacity:0.25;
+  border-radius:2vw;
+  z-index:1;
+  animation: rotateGlow 4s linear infinite;
+}
+.epic-neon-btn::after{
+  content:'';
+  position:absolute;
+  top:50%; left:50%;
   width:20vw; height:20vw;
   background: rgba(0,255,255,0.3);
   border-radius:50%;
-  transform:translate(-50%,-50%) scale(0);
+  transform: translate(-50%,-50%) scale(0);
   opacity:0;
   transition: transform 0.6s, opacity 0.6s;
   pointer-events:none;
 }
-
-.epic-neon-btn:active::after {
-  transform: translate(-50%, -50%) scale(3);
+.epic-neon-btn:active::after{
+  transform:translate(-50%,-50%) scale(3);
   opacity:1;
   transition:0s;
 }
-
-.epic-neon-btn:hover {
+.epic-neon-btn:hover{
   color:#fff;
   box-shadow:0 0 6vw #0ff,0 0 12vw #0ff,0 0 18vw #0ff,0 0 30vw #0ff;
 }
 
 /* Animations */
-@keyframes shimmer {
-  0% { color: var(--neon-color); }
-  50% { color: #fff; }
-  100% { color: var(--neon-color); }
-}
+@keyframes shimmer{0%{color:var(--neon-color);}50%{color:#fff;}100%{color:var(--neon-color);}}
+@keyframes pulse{0%{box-shadow:0 0 3vw var(--neon-color),0 0 6vw var(--neon-color);}100%{box-shadow:0 0 9vw var(--neon-color),0 0 18vw var(--neon-color),0 0 27vw var(--neon-color);}}
+@keyframes rotateGlow{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
 
-@keyframes pulse {
-  0% { box-shadow:0 0 3vw var(--neon-color),0 0 6vw var(--neon-color); }
-  100% { box-shadow:0 0 9vw var(--neon-color),0 0 18vw var(--neon-color),0 0 27vw var(--neon-color); }
-}
-
-@keyframes rotateGlow {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Canvas */
-#sparks-canvas {
-  position: fixed;
+#sparks-canvas{
+  position:fixed;
   top:0; left:0;
   width:100%; height:100%;
   pointer-events:none;
@@ -124,6 +117,6 @@ body {
 /* Responsive tweaks */
 @media(max-width:480px){
   .neon-text{font-size:10vw;}
-  .subtext{font-size:4vw;}
-  .epic-neon-btn{font-size:6vw; padding:4vw 10vw; border-radius:4vw;}
+  .subtext{font-size:5vw;}
+  .epic-neon-btn{font-size:6vw;padding:4vw 10vw;border-radius:4vw;}
 }
