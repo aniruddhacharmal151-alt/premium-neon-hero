@@ -3,29 +3,24 @@
   --btn-bg: #111;
 }
 
-/* Base setup */
 * { box-sizing: border-box; margin:0; padding:0; }
 body {
   font-family: 'Arial', sans-serif;
-  height: 100vh;
   background: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   overflow: hidden;
 }
 
-/* Hero wrapper */
 .hero {
   text-align: center;
   padding: 5vw;
   width: 100%;
-  max-width: 600px; /* mobile-friendly limit */
+  max-width: 600px;
+  position: relative;
+  z-index: 1;
 }
 
-/* Neon heading */
 .neon-text {
-  font-size: 8vw; /* scales with screen width */
+  font-size: 8vw;
   color: var(--neon-color);
   text-transform: uppercase;
   letter-spacing: 0.2em;
@@ -34,7 +29,6 @@ body {
   margin-bottom: 3vw;
 }
 
-/* Subtext */
 .subtext {
   font-size: 4vw;
   color: var(--neon-color);
@@ -42,23 +36,23 @@ body {
   margin-bottom: 6vw;
 }
 
-/* Buttons container */
 .buttons {
   display: flex;
   flex-direction: column;
   gap: 4vw;
   align-items: center;
+  z-index: 1;
+  position: relative;
 }
 
-/* Epic neon buttons */
 .epic-neon-btn {
   position: relative;
-  padding: 3vw 8vw; /* scales on mobile */
+  padding: 3vw 8vw;
   color: var(--neon-color);
   background: var(--btn-bg);
   border: 2px solid var(--neon-color);
   border-radius: 2vw;
-  font-size: 5vw; /* scales */
+  font-size: 5vw;
   cursor: pointer;
   overflow: hidden;
   box-shadow: 0 0 3vw var(--neon-color), 0 0 6vw var(--neon-color);
@@ -66,77 +60,40 @@ body {
   animation: pulse 1.5s infinite alternate;
 }
 
-.epic-neon-btn span {
-  position: relative;
-  z-index: 2;
-}
+.epic-neon-btn span { position: relative; z-index:2; }
 
 .epic-neon-btn::before {
   content: '';
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, #0ff, #f0f, #ff0, #0ff);
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: linear-gradient(45deg,#0ff,#f0f,#ff0,#0ff);
   animation: rotateGlow 4s linear infinite;
-  z-index: 1;
-  opacity: 0.25;
-  border-radius: 2vw;
+  z-index:1; opacity:0.25; border-radius: 2vw;
 }
 
 .epic-neon-btn::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 20vw;
-  height: 20vw;
+  content:'';
+  position:absolute; top:50%; left:50%;
+  width:20vw; height:20vw;
   background: rgba(0,255,255,0.3);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
+  border-radius:50%;
+  transform:translate(-50%,-50%) scale(0);
+  opacity:0;
   transition: transform 0.6s, opacity 0.6s;
-  pointer-events: none;
+  pointer-events:none;
 }
 
 .epic-neon-btn:active::after {
   transform: translate(-50%, -50%) scale(3);
-  opacity: 1;
-  transition: 0s;
+  opacity:1;
+  transition:0s;
 }
 
 .epic-neon-btn:hover {
-  color: #fff;
-  box-shadow: 0 0 6vw #0ff, 0 0 12vw #0ff, 0 0 18vw #0ff, 0 0 30vw #0ff;
+  color:#fff;
+  box-shadow:0 0 6vw #0ff,0 0 12vw #0ff,0 0 18vw #0ff,0 0 30vw #0ff;
 }
-
-/* Floating shapes */
-.shape-container {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.shape {
-  position: absolute;
-  width: 4vw; height: 4vw;
-  background: var(--neon-color);
-  opacity: 0.7;
-  animation: floatShape 10s linear infinite;
-}
-
-.shape.circle { border-radius: 50%; }
-.shape.triangle { clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
-.shape.square {}
-
-.shape:nth-child(1) { left: 10%; animation-delay: 0s; top: 80%; }
-.shape:nth-child(2) { left: 30%; animation-delay: 2s; top: 90%; }
-.shape:nth-child(3) { left: 50%; animation-delay: 4s; top: 70%; }
-.shape:nth-child(4) { left: 70%; animation-delay: 6s; top: 85%; }
-.shape:nth-child(5) { left: 90%; animation-delay: 8s; top: 75%; }
 
 /* Animations */
 @keyframes shimmer {
@@ -146,8 +103,8 @@ body {
 }
 
 @keyframes pulse {
-  0% { box-shadow: 0 0 3vw var(--neon-color), 0 0 6vw var(--neon-color); }
-  100% { box-shadow: 0 0 9vw var(--neon-color), 0 0 18vw var(--neon-color), 0 0 27vw var(--neon-color); }
+  0% { box-shadow:0 0 3vw var(--neon-color),0 0 6vw var(--neon-color); }
+  100% { box-shadow:0 0 9vw var(--neon-color),0 0 18vw var(--neon-color),0 0 27vw var(--neon-color); }
 }
 
 @keyframes rotateGlow {
@@ -155,15 +112,18 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-@keyframes floatShape {
-  0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
-  50% { opacity: 0.2; }
-  100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+/* Canvas */
+#sparks-canvas {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  pointer-events:none;
+  z-index:0;
 }
 
-/* Responsive tweaks for small screens */
-@media (max-width: 480px) {
-  .neon-text { font-size: 10vw; }
-  .subtext { font-size: 4vw; }
-  .epic-neon-btn { font-size: 6vw; padding: 4vw 10vw; border-radius: 4vw; }
+/* Responsive tweaks */
+@media(max-width:480px){
+  .neon-text{font-size:10vw;}
+  .subtext{font-size:4vw;}
+  .epic-neon-btn{font-size:6vw; padding:4vw 10vw; border-radius:4vw;}
 }
