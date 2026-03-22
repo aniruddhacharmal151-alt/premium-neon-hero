@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interactive Neon Hero</title>
+<title>Responsive Neon Hero</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="hero">
     <h1 class="neon-text">Cyber Neon World</h1>
-    <p class="subtext">Futuristic landing page with interactive sparks</p>
+    <p class="subtext">Ultimate futuristic landing page</p>
     <div class="buttons">
       <button class="epic-neon-btn"><span>Get Started</span></button>
       <button class="epic-neon-btn"><span>Learn More</span></button>
@@ -22,13 +22,12 @@
     const ctx = canvas.getContext('2d');
     let sparks = [];
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    window.addEventListener('resize', () => {
+    function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-    });
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
     function createSpark(x, y) {
       sparks.push({
@@ -51,7 +50,7 @@
         spark.x += spark.vx;
         spark.y += spark.vy;
         spark.alpha -= 0.02;
-        if (spark.alpha <= 0) sparks.splice(i,1);
+        if(spark.alpha <= 0) sparks.splice(i,1);
       });
       requestAnimationFrame(animate);
     }
