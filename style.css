@@ -1,67 +1,67 @@
 :root {
   --neon-color: #0ff;
   --btn-bg: #111;
-  --btn-padding: 18px 50px;
-  --btn-radius: 15px;
 }
 
-* {
-  box-sizing: border-box;
-}
-
+/* Base setup */
+* { box-sizing: border-box; margin:0; padding:0; }
 body {
-  margin: 0;
+  font-family: 'Arial', sans-serif;
   height: 100vh;
   background: #000;
-  font-family: 'Arial', sans-serif;
-  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
+/* Hero wrapper */
 .hero {
   text-align: center;
-  position: relative;
-  padding: 0 20px;
+  padding: 5vw;
+  width: 100%;
+  max-width: 600px; /* mobile-friendly limit */
 }
 
+/* Neon heading */
 .neon-text {
-  font-size: 3.5rem;
-  color: #0ff;
+  font-size: 8vw; /* scales with screen width */
+  color: var(--neon-color);
   text-transform: uppercase;
-  letter-spacing: 4px;
+  letter-spacing: 0.2em;
   animation: shimmer 3s linear infinite;
-  text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
-  margin-bottom: 20px;
+  text-shadow: 0 0 5px var(--neon-color), 0 0 10px var(--neon-color), 0 0 20px var(--neon-color);
+  margin-bottom: 3vw;
 }
 
+/* Subtext */
 .subtext {
-  color: #0ff;
+  font-size: 4vw;
+  color: var(--neon-color);
   opacity: 0.7;
-  margin-bottom: 40px;
-  font-size: 1.2rem;
+  margin-bottom: 6vw;
 }
 
-/* Buttons */
+/* Buttons container */
 .buttons {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 25px;
+  flex-direction: column;
+  gap: 4vw;
+  align-items: center;
 }
 
+/* Epic neon buttons */
 .epic-neon-btn {
   position: relative;
-  padding: var(--btn-padding);
+  padding: 3vw 8vw; /* scales on mobile */
   color: var(--neon-color);
   background: var(--btn-bg);
   border: 2px solid var(--neon-color);
-  border-radius: var(--btn-radius);
-  font-size: 1.8rem;
+  border-radius: 2vw;
+  font-size: 5vw; /* scales */
   cursor: pointer;
   overflow: hidden;
-  box-shadow: 0 0 10px var(--neon-color), 0 0 20px var(--neon-color);
+  box-shadow: 0 0 3vw var(--neon-color), 0 0 6vw var(--neon-color);
   transition: 0.3s;
   animation: pulse 1.5s infinite alternate;
 }
@@ -82,7 +82,7 @@ body {
   animation: rotateGlow 4s linear infinite;
   z-index: 1;
   opacity: 0.25;
-  border-radius: var(--btn-radius);
+  border-radius: 2vw;
 }
 
 .epic-neon-btn::after {
@@ -90,8 +90,8 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 120px;
-  height: 120px;
+  width: 20vw;
+  height: 20vw;
   background: rgba(0,255,255,0.3);
   border-radius: 50%;
   transform: translate(-50%, -50%) scale(0);
@@ -108,7 +108,7 @@ body {
 
 .epic-neon-btn:hover {
   color: #fff;
-  box-shadow: 0 0 25px #0ff, 0 0 50px #0ff, 0 0 75px #0ff, 0 0 120px #0ff;
+  box-shadow: 0 0 6vw #0ff, 0 0 12vw #0ff, 0 0 18vw #0ff, 0 0 30vw #0ff;
 }
 
 /* Floating shapes */
@@ -122,8 +122,8 @@ body {
 
 .shape {
   position: absolute;
-  width: 20px; height: 20px;
-  background: #0ff;
+  width: 4vw; height: 4vw;
+  background: var(--neon-color);
   opacity: 0.7;
   animation: floatShape 10s linear infinite;
 }
@@ -132,7 +132,6 @@ body {
 .shape.triangle { clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
 .shape.square {}
 
-/* Random positions */
 .shape:nth-child(1) { left: 10%; animation-delay: 0s; top: 80%; }
 .shape:nth-child(2) { left: 30%; animation-delay: 2s; top: 90%; }
 .shape:nth-child(3) { left: 50%; animation-delay: 4s; top: 70%; }
@@ -141,14 +140,14 @@ body {
 
 /* Animations */
 @keyframes shimmer {
-  0% { color: #0ff; }
+  0% { color: var(--neon-color); }
   50% { color: #fff; }
-  100% { color: #0ff; }
+  100% { color: var(--neon-color); }
 }
 
 @keyframes pulse {
-  0% { box-shadow: 0 0 10px #0ff, 0 0 20px #0ff; }
-  100% { box-shadow: 0 0 30px #0ff, 0 0 60px #0ff, 0 0 90px #0ff; }
+  0% { box-shadow: 0 0 3vw var(--neon-color), 0 0 6vw var(--neon-color); }
+  100% { box-shadow: 0 0 9vw var(--neon-color), 0 0 18vw var(--neon-color), 0 0 27vw var(--neon-color); }
 }
 
 @keyframes rotateGlow {
@@ -159,12 +158,12 @@ body {
 @keyframes floatShape {
   0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
   50% { opacity: 0.2; }
-  100% { transform: translateY(-1200px) rotate(360deg); opacity: 0; }
+  100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .neon-text { font-size: 2.5rem; }
-  .subtext { font-size: 1rem; }
-  .epic-neon-btn { font-size: 1.5rem; padding: 15px 40px; }
+/* Responsive tweaks for small screens */
+@media (max-width: 480px) {
+  .neon-text { font-size: 10vw; }
+  .subtext { font-size: 4vw; }
+  .epic-neon-btn { font-size: 6vw; padding: 4vw 10vw; border-radius: 4vw; }
 }
